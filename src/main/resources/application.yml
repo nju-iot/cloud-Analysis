@@ -1,0 +1,28 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: client1
+  jackson:
+    time-zone: GMT+8
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    encoding: utf-8
+    servlet:
+      content-type: text/html
+    cache: false
+  rabbitmq:
+    host: 139.196.202.149
+    port: 5672
+    username: admin
+    password: admin
+
+eureka:
+  client:
+    service-url:
+      defaultZone : http://localhost:8080/eureka/
+  instance:
+    prefer-ip-address: true
