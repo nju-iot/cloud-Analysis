@@ -19,6 +19,12 @@ spring:
     port: 5672
     username: admin
     password: admin
+  data:
+    mongodb:
+      host: 127.0.0.1
+      port: 27017
+      database: devicedb
+      #uri: mongodb://127.0.0.1:27017/devicedb?maxpoolsize=10&minpoolsize=1&maxidletimems=600000&
 
 eureka:
   client:

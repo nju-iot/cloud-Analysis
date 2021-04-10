@@ -1,4 +1,4 @@
-package com.example.cloudbiz1.Entity;
+package com.example.cloudbiz1.entity;
 
 import lombok.Data;
 
