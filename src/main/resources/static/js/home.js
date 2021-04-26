@@ -208,6 +208,7 @@ $(document).ready(function () {
     echarts.registerTransform(ecStat.transform.regression);
 
     graph();
+
     function graph() {
         var option;
         option = {
@@ -258,9 +259,9 @@ $(document).ready(function () {
                 datasetIndex: 1,
                 symbolSize: 0.1,
                 symbol: 'circle',
-                label: { show: true, fontSize: 16 },
-                labelLayout: { dx: -20 },
-                encode: { label: 2, tooltip: 1 }
+                label: {show: true, fontSize: 16},
+                labelLayout: {dx: -20},
+                encode: {label: 2, tooltip: 1}
             }]
         };
         option && myChart.setOption(option);

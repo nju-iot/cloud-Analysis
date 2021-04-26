@@ -16,7 +16,7 @@ import java.util.Map;
 public class DirectReceiver {
 
     @RabbitHandler
-    public void process(Map testMessage){
+    public void process(Map testMessage) {
         System.out.println("DirectReceiver消费者收到消息  : " + testMessage.toString());
     }
 }

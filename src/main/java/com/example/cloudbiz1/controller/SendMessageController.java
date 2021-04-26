@@ -22,11 +22,11 @@ public class SendMessageController {
     RabbitTemplate rabbitTemplate; //使用RabbitTemplate,这提供了接收/发送等等方法
 
     @GetMapping("/sendDirectMessage")
-    public String sendDirectMessage(){
+    public String sendDirectMessage() {
         String messageId = String.valueOf(UUID.randomUUID());
         String messageData = "hello!";
         String createTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        Map<String,Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put("messageId", messageId);
         map.put("messageData", messageData);
         map.put("createTime", createTime);

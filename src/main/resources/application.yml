@@ -21,14 +21,17 @@ spring:
     password: admin
   data:
     mongodb:
-      host: 127.0.0.1
+      host: 139.196.202.149
       port: 27017
       database: devicedb
-      #uri: mongodb://127.0.0.1:27017/devicedb?maxpoolsize=10&minpoolsize=1&maxidletimems=600000&
+      #uri: mongodb://139.196.202.149:27017/devicedb?maxpoolsize=10&minpoolsize=1&maxidletimems=600000&
+      username: root
+      password: '123456'
+
 
 eureka:
   client:
     service-url:
-      defaultZone : http://localhost:8080/eureka/
+      defaultZone: http://localhost:8080/eureka/
   instance:
     prefer-ip-address: true

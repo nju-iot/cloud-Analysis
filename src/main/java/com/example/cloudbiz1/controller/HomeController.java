@@ -12,8 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
 
     @RequestMapping()
-    public String sayHello(){
+    public String sayHello() {
         return "home";
+    }
+
+    @RequestMapping("/main")
+    public String jumpMain() {
+        System.out.println("main!!!");
+        return "main";
     }
 
 }
