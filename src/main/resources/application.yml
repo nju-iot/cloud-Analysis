@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: client1
+    name: data_Analysis
   jackson:
     time-zone: GMT+8
   thymeleaf:
@@ -32,6 +32,6 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8080/eureka/
+      defaultZone: http://139.196.202.149:8080/eureka/
   instance:
     prefer-ip-address: true

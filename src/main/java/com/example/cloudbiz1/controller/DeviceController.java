@@ -28,6 +28,9 @@ public class DeviceController {
         return "statistic";
     }
 
+    /*
+        初始化数组，但目前不被使用
+     */
     @RequestMapping(value = "/initList", method = RequestMethod.GET)
     @ResponseBody
     public Integer initList() {
@@ -39,26 +42,37 @@ public class DeviceController {
         return res;
     }
 
+
+    /*
+        用于生成折线图，统计室内外温度的变化
+     */
     @RequestMapping(value = "/meanByPlace", method = RequestMethod.POST)
     @ResponseBody
     public List<DateMean> meanByPlace(@RequestBody(required = false) String place) {
         return deviceService.queryDeviceByPlace(place);
     }
 
-
+    /*
+        用于生成饼图，统计室内外温度的占比
+     */
     @RequestMapping(value = "/InAndOut", method = RequestMethod.GET)
     @ResponseBody
     public List<PieVO> inAndOut() {
         return deviceService.queryDataDistribute();
     }
 
+    /*
+        用于生成柱状图，统计温度的出现次数
+     */
     @RequestMapping(value = "/tempNum", method = RequestMethod.POST)
     @ResponseBody
     public List<TempNumVO> getTempAndNum(@RequestBody(required = false) String place) {
         return deviceService.tempDistributeNum(place);
     }
 
-
+    /*
+        用于生成散点图 和 回归分析图
+     */
     @RequestMapping(value = "/tempMeanScatter", method = RequestMethod.GET)
     @ResponseBody
     public List<List<Double>> getTempMeanScatter() {

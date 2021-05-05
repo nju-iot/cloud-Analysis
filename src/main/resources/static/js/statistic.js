@@ -4,7 +4,6 @@ $(document).ready(function () {
     getDistribution();
     getTempAndNum(place_In);
     getTempAndNum(place_Out);
-    //init();
     getMeanByPlace(place_In, 1);
     getMeanByPlace(place_Out, 2);
     getTempByScatter();
@@ -26,6 +25,9 @@ $(document).ready(function () {
         })
     }
 
+    /*
+        生成散点图 和 回归分析图
+     */
     function getTempByScatter() {
         $.ajax({
             type: 'GET',
@@ -77,6 +79,75 @@ $(document).ready(function () {
         option && myChart.setOption(option);
     }
 
+    function draw_linear_regression(data) {
+
+        var chartDom = document.getElementById('linear-regression');
+        var myChart = echarts.init(chartDom);
+
+        echarts.registerTransform(ecStat.transform.regression);
+
+        var option;
+        option = {
+            dataset: [{
+                source: data
+            }, {
+                transform: {
+                    type: 'ecStat:regression'
+                    // 'linear' by default.
+                    // config: { method: 'linear', formulaOn: 'end'}
+                }
+            }],
+            title: {
+                text: 'Linear Regression',
+                subtext: 'By ecStat.regression',
+                sublink: 'https://github.com/ecomfe/echarts-stat',
+                left: 'center'
+            },
+            legend: {
+                bottom: 5
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross'
+                }
+            },
+            xAxis: {
+                name: '室内温度',
+                splitLine: {
+                    lineStyle: {
+                        type: 'dashed'
+                    }
+                },
+            },
+            yAxis: {
+                name: '室外温度',
+                splitLine: {
+                    lineStyle: {
+                        type: 'dashed'
+                    }
+                },
+            },
+            series: [{
+                name: 'scatter',
+                type: 'scatter'
+            }, {
+                name: 'line',
+                type: 'line',
+                datasetIndex: 1,
+                symbolSize: 0.1,
+                symbol: 'circle',
+                label: {show: true, fontSize: 16},
+                labelLayout: {dx: -20},
+                encode: {label: 2, tooltip: 1}
+            }]
+        };
+        option && myChart.setOption(option);
+    }
+
+    /*
+        生成柱状图
+     */
     function getTempAndNum(place) {
         $.ajax({
             type: 'POST',
@@ -143,7 +214,9 @@ $(document).ready(function () {
         option && myChart.setOption(option);
     }
 
-
+    /*
+        生成饼图
+     */
     function getDistribution() {
         $.ajax({
             type: 'GET',
@@ -200,6 +273,9 @@ $(document).ready(function () {
 
     }
 
+    /*
+        生成折线图
+     */
     function getMeanByPlace(place, index) {
         $.ajax({
             type: 'POST',
@@ -287,72 +363,6 @@ $(document).ready(function () {
                 data: valueList,
                 type: 'line',
                 areaStyle: {}
-            }]
-        };
-        option && myChart.setOption(option);
-    }
-
-    function draw_linear_regression(data) {
-
-        var chartDom = document.getElementById('linear-regression');
-        var myChart = echarts.init(chartDom);
-
-        echarts.registerTransform(ecStat.transform.regression);
-
-        var option;
-        option = {
-            dataset: [{
-                source: data
-            }, {
-                transform: {
-                    type: 'ecStat:regression'
-                    // 'linear' by default.
-                    // config: { method: 'linear', formulaOn: 'end'}
-                }
-            }],
-            title: {
-                text: 'Linear Regression',
-                subtext: 'By ecStat.regression',
-                sublink: 'https://github.com/ecomfe/echarts-stat',
-                left: 'center'
-            },
-            legend: {
-                bottom: 5
-            },
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    type: 'cross'
-                }
-            },
-            xAxis: {
-                name: '室内温度',
-                splitLine: {
-                    lineStyle: {
-                        type: 'dashed'
-                    }
-                },
-            },
-            yAxis: {
-                name: '室外温度',
-                splitLine: {
-                    lineStyle: {
-                        type: 'dashed'
-                    }
-                },
-            },
-            series: [{
-                name: 'scatter',
-                type: 'scatter'
-            }, {
-                name: 'line',
-                type: 'line',
-                datasetIndex: 1,
-                symbolSize: 0.1,
-                symbol: 'circle',
-                label: {show: true, fontSize: 16},
-                labelLayout: {dx: -20},
-                encode: {label: 2, tooltip: 1}
             }]
         };
         option && myChart.setOption(option);
