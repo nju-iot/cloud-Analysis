@@ -14,11 +14,6 @@ spring:
     servlet:
       content-type: text/html
     cache: false
-  rabbitmq:
-    host: 139.196.202.149
-    port: 5672
-    username: admin
-    password: admin
   data:
     mongodb:
       host: 139.196.202.149
@@ -32,6 +27,12 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://139.196.202.149:8080/eureka/
+      defaultZone: http://localhost:8080/eureka/
   instance:
     prefer-ip-address: true
+
+rocketmq:
+  producer:
+    groupName: ${spring.application.name}
+    namesrvAddr: 139.196.202.149:9876
+    default: false

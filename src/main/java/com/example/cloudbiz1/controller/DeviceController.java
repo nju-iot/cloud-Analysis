@@ -5,6 +5,7 @@ import com.example.cloudbiz1.VO.TempNumVO;
 import com.example.cloudbiz1.entity.DateMean;
 import com.example.cloudbiz1.entity.Device;
 import com.example.cloudbiz1.service.DeviceService;
+import com.example.cloudbiz1.service.MQService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,10 @@ public class DeviceController {
 
     @Autowired
     public DeviceService deviceService;
+
+    @Autowired
+    public MQService mqService;
+
 
     @GetMapping()
     public String devicePage() {
@@ -78,6 +83,38 @@ public class DeviceController {
     public List<List<Double>> getTempMeanScatter() {
         return deviceService.tempDistributeByScatter();
     }
+
+
+    @RequestMapping(value = "/testMQ",method = RequestMethod.GET)
+    @ResponseBody
+    public void testProduce(){
+        mqService.produceMessage();
+    }
+
+
+
+    /*
+
+        返回当前数据总量
+     */
+    @RequestMapping(value = "/allDataNum",method = RequestMethod.GET)
+    @ResponseBody
+    public String getAllDataNum(){
+        return null;
+    }
+
+
+    /*
+        返回当前最新温度
+     */
+    @RequestMapping(value = "/newTemper",method = RequestMethod.GET)
+    @ResponseBody
+    public String getNewTemper(){
+        return null;
+    }
+
+
+
 
 
 }
