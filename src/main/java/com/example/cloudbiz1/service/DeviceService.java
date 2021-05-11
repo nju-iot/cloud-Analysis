@@ -1,6 +1,7 @@
 package com.example.cloudbiz1.service;
 
 import com.example.cloudbiz1.VO.PieVO;
+import com.example.cloudbiz1.VO.SpotVO;
 import com.example.cloudbiz1.VO.TempNumVO;
 import com.example.cloudbiz1.entity.DateMean;
 import com.example.cloudbiz1.entity.Device;
@@ -23,4 +24,6 @@ public interface DeviceService {
     List<TempNumVO> tempDistributeNum(String place);
 
     List<List<Double>> tempDistributeByScatter();
+
+    List<List<SpotVO>> emptySpotEveryTime();
 }

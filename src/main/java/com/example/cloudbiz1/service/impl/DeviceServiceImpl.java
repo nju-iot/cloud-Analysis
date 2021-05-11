@@ -1,6 +1,7 @@
 package com.example.cloudbiz1.service.impl;
 
 import com.example.cloudbiz1.VO.PieVO;
+import com.example.cloudbiz1.VO.SpotVO;
 import com.example.cloudbiz1.VO.TempNumVO;
 import com.example.cloudbiz1.dao.DeviceRepository;
 import com.example.cloudbiz1.entity.DateMean;
@@ -55,7 +56,6 @@ public class DeviceServiceImpl implements DeviceService {
                 DateMean dateMean = new DateMean(rs.getString("date"), rs.getDouble("mean"));
                 list.add(dateMean);
             }
-            System.out.println("List size : " + list.size());
             connection.close();
         }catch (Exception e){
             e.printStackTrace();
@@ -241,6 +241,33 @@ public class DeviceServiceImpl implements DeviceService {
         return res;
     }
 
+    public List<List<SpotVO>> emptySpotEveryTime(){
+        List<List<SpotVO>> res = new ArrayList<>();
+        try{
+            Class.forName(driver);
+            Connection connection = DriverManager.getConnection(url, username, password);
+            if(!connection.isClosed())
+                System.out.println("Succeeded connecting to the Database!");
+            for(int i=1;i<60;i++){
+                PreparedStatement statement = connection.prepareStatement("select line, num from empty_spot where time = ?");//操作数据库
+                statement.setInt(1,i);
+                ResultSet rs = statement.executeQuery();
+                List<SpotVO> list = new ArrayList<>();
+                while (rs.next()){
+                    //DateMean dateMean = new DateMean(rs.getString("date"), rs.getDouble("mean"));
+                    SpotVO spotVO = new SpotVO(rs.getInt("line"), rs.getInt("num"));
+                    list.add(spotVO);
+                }
+                res.add(list);
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return res;
+    }
+
     private List<DateMean> getTempMeanByDate(List<Device> list) {
         Map<String, Integer> dateTotal = new HashMap<>();
         Map<String, Integer> dataNum = new HashMap<>();
@@ -261,5 +288,6 @@ public class DeviceServiceImpl implements DeviceService {
         }
         return res;
     }
+
 
 }

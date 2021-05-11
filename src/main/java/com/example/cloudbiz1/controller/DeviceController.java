@@ -1,6 +1,7 @@
 package com.example.cloudbiz1.controller;
 
 import com.example.cloudbiz1.VO.PieVO;
+import com.example.cloudbiz1.VO.SpotVO;
 import com.example.cloudbiz1.VO.TempNumVO;
 import com.example.cloudbiz1.entity.DateMean;
 import com.example.cloudbiz1.entity.Device;
@@ -113,6 +114,16 @@ public class DeviceController {
         return null;
     }
 
+
+    /*
+
+
+     */
+    @RequestMapping(value = "/getEmptySpot", method = RequestMethod.GET)
+    @ResponseBody
+    public List<List<SpotVO>> getEmptySpot(){
+        return deviceService.emptySpotEveryTime();
+    }
 
 
 
