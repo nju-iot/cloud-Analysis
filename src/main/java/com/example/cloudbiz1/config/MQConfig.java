@@ -9,8 +9,6 @@ public class MQConfig {
         Name Server 地址
      */
     public static final String NAME_SERVER = "139.196.202.149:9876";
-
-
     /*
 
         主题名称，

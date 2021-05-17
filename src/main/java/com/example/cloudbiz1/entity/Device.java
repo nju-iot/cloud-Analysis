@@ -10,7 +10,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "device")
 public class Device {
 
-
     private String Id;
 
     private String date;

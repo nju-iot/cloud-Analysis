@@ -3,6 +3,8 @@ package com.example.cloudbiz1.service.impl;
 import com.example.cloudbiz1.VO.PieVO;
 import com.example.cloudbiz1.VO.SpotVO;
 import com.example.cloudbiz1.VO.TempNumVO;
+import com.example.cloudbiz1.VO.TimeDataVO;
+import com.example.cloudbiz1.config.DBConfig;
 import com.example.cloudbiz1.dao.DeviceRepository;
 import com.example.cloudbiz1.entity.DateMean;
 import com.example.cloudbiz1.entity.Device;
@@ -215,14 +217,10 @@ public class DeviceServiceImpl implements DeviceService {
     public List<List<Double>> tempDistributeByScatter() {
         List<DateMean> inRes = queryDeviceByPlace("In");
         List<DateMean> outRes = queryDeviceByPlace("Out");
-
-
         Map<String, Double> inMap = new HashMap<>();
         Map<String, Double> outMap = new HashMap<>();
-
         for (DateMean dateMean : inRes) inMap.put(dateMean.getDate(), dateMean.getMean());
         for (DateMean dateMean : outRes) outMap.put(dateMean.getDate(), dateMean.getMean());
-
         Iterator iter = inMap.entrySet().iterator();
         List<List<Double>> res = new ArrayList<>();
         while (iter.hasNext()) {
@@ -268,13 +266,79 @@ public class DeviceServiceImpl implements DeviceService {
         return res;
     }
 
+    public void update_data(String date,String temp,String name,String lng, String lat){
+        try{
+            DBConfig dbConfig = DBConfig.getInstance();
+            Connection connection = dbConfig.getConnection();
+            if(!connection.isClosed())
+                System.out.println("Succeeded connecting to the Database!");
+            PreparedStatement statement = connection.prepareStatement("insert into real_time_data(id,device_name,temp,lng,lat,time) value (?,?,?,?,?,?)");//操作数据库
+            statement.setString(1,UUID.randomUUID().toString());
+            statement.setString(2,name);
+            statement.setInt(3,Integer.parseInt(temp));
+            statement.setString(4,lng);
+            statement.setString(5,lat);
+            statement.setTimestamp(6, Timestamp.valueOf(date));
+            int result = statement.executeUpdate();
+            if(result!=0){
+                System.out.println("插入成功");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public int getSizeOfAllData(){
+        int count = 97606;
+        try{
+            DBConfig dbConfig = DBConfig.getInstance();
+            Connection connection = dbConfig.getConnection();
+            if(!connection.isClosed())
+                System.out.println("Succeeded connecting to the Database!");
+            PreparedStatement statement = connection.prepareStatement("select temp from real_time_data");
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()){
+               count++;
+            }
+            return count;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+
+    public TimeDataVO getNewData(){
+        try{
+            DBConfig dbConfig = DBConfig.getInstance();
+            Connection connection = dbConfig.getConnection();
+            if(!connection.isClosed())
+                System.out.println("Succeeded connecting to the Database!");
+            PreparedStatement statement = connection.prepareStatement("select * from real_time_data order by time desc limit 1");
+            ResultSet rs = statement.executeQuery();
+            TimeDataVO timeDataVO = new TimeDataVO(rs.getString("id"),
+                    rs.getString("device_name"),
+                    rs.getInt("temp"),
+                    rs.getString("lng"),
+                    rs.getString("lat"),
+                    rs.getTimestamp("time"));
+            return timeDataVO;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new TimeDataVO();
+    }
+
+
     private List<DateMean> getTempMeanByDate(List<Device> list) {
         Map<String, Integer> dateTotal = new HashMap<>();
         Map<String, Integer> dataNum = new HashMap<>();
 
         for (Device device : list) {
             String date = device.getDate().substring(0, 10);
-            dateTotal.put(date, dateTotal.get(date) == null ? Integer.parseInt(device.getTemp()) : dateTotal.get(date) + Integer.parseInt(device.getTemp()));
+            dateTotal.put(date, dateTotal.get(date) ==
+                    null ? Integer.parseInt(device.getTemp()) : dateTotal.get(date) + Integer.parseInt(device.getTemp()));
             dataNum.put(date, dataNum.get(date) == null ? 0 : dataNum.get(date) + 1);
         }
         Iterator iter = dateTotal.entrySet().iterator();

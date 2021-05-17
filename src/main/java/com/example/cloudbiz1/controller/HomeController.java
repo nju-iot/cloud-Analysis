@@ -22,4 +22,9 @@ public class HomeController {
         return "main";
     }
 
+    @RequestMapping("/china")
+    public String jumpChina(){
+        return "china";
+    }
+
 }

@@ -3,6 +3,7 @@ package com.example.cloudbiz1.service;
 import com.example.cloudbiz1.VO.PieVO;
 import com.example.cloudbiz1.VO.SpotVO;
 import com.example.cloudbiz1.VO.TempNumVO;
+import com.example.cloudbiz1.VO.TimeDataVO;
 import com.example.cloudbiz1.entity.DateMean;
 import com.example.cloudbiz1.entity.Device;
 
@@ -26,4 +27,12 @@ public interface DeviceService {
     List<List<Double>> tempDistributeByScatter();
 
     List<List<SpotVO>> emptySpotEveryTime();
+
+    void update_data(String date,String temp,String name,String lng, String lat);
+
+    int getSizeOfAllData();
+
+    TimeDataVO getNewData();
+
+
 }

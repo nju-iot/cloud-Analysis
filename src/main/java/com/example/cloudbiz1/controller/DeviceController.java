@@ -3,6 +3,7 @@ package com.example.cloudbiz1.controller;
 import com.example.cloudbiz1.VO.PieVO;
 import com.example.cloudbiz1.VO.SpotVO;
 import com.example.cloudbiz1.VO.TempNumVO;
+import com.example.cloudbiz1.VO.TimeDataVO;
 import com.example.cloudbiz1.entity.DateMean;
 import com.example.cloudbiz1.entity.Device;
 import com.example.cloudbiz1.service.DeviceService;
@@ -95,13 +96,12 @@ public class DeviceController {
 
 
     /*
-
         返回当前数据总量
      */
     @RequestMapping(value = "/allDataNum",method = RequestMethod.GET)
     @ResponseBody
-    public String getAllDataNum(){
-        return null;
+    public int getAllDataNum(){
+        return deviceService.getSizeOfAllData();
     }
 
 
@@ -110,14 +110,13 @@ public class DeviceController {
      */
     @RequestMapping(value = "/newTemper",method = RequestMethod.GET)
     @ResponseBody
-    public String getNewTemper(){
-        return null;
+    public TimeDataVO getNewTemper(){
+        return deviceService.getNewData();
     }
 
 
     /*
-
-
+        返回空闲车位
      */
     @RequestMapping(value = "/getEmptySpot", method = RequestMethod.GET)
     @ResponseBody
