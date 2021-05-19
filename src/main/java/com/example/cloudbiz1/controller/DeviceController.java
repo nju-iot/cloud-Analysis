@@ -5,20 +5,17 @@ import com.example.cloudbiz1.VO.SpotVO;
 import com.example.cloudbiz1.VO.TempNumVO;
 import com.example.cloudbiz1.VO.TimeDataVO;
 import com.example.cloudbiz1.entity.DateMean;
-import com.example.cloudbiz1.entity.Device;
 import com.example.cloudbiz1.service.DeviceService;
 import com.example.cloudbiz1.service.MQService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 /**
  * @author xmx
  * @date 2021/4/9
  **/
-
 @Controller
 @RequestMapping(value = "/device")
 public class DeviceController {
@@ -34,6 +31,12 @@ public class DeviceController {
     public String devicePage() {
         return "statistic";
     }
+
+    @RequestMapping(value = "/china",method = RequestMethod.GET)
+    public String chinaPage(){
+        return "china";
+    }
+
 
     /*
         初始化数组，但目前不被使用
@@ -123,8 +126,5 @@ public class DeviceController {
     public List<List<SpotVO>> getEmptySpot(){
         return deviceService.emptySpotEveryTime();
     }
-
-
-
 
 }

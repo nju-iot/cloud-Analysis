@@ -27,4 +27,9 @@ public class HomeController {
         return "china";
     }
 
+    @RequestMapping("/layui")
+    public String layuiJump(){
+        return "TestUI";
+    }
+
 }

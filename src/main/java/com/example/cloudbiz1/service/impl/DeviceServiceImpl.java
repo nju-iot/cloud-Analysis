@@ -317,12 +317,15 @@ public class DeviceServiceImpl implements DeviceService {
                 System.out.println("Succeeded connecting to the Database!");
             PreparedStatement statement = connection.prepareStatement("select * from real_time_data order by time desc limit 1");
             ResultSet rs = statement.executeQuery();
-            TimeDataVO timeDataVO = new TimeDataVO(rs.getString("id"),
-                    rs.getString("device_name"),
-                    rs.getInt("temp"),
-                    rs.getString("lng"),
-                    rs.getString("lat"),
-                    rs.getTimestamp("time"));
+            TimeDataVO timeDataVO = new TimeDataVO();
+            while (rs.next()){
+                timeDataVO = new TimeDataVO(rs.getString("id"),
+                        rs.getString("device_name"),
+                        rs.getInt("temp"),
+                        rs.getString("lng"),
+                        rs.getString("lat"),
+                        rs.getTimestamp("time"));
+            }
             return timeDataVO;
         }catch (Exception e){
             e.printStackTrace();
