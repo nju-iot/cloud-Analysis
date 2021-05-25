@@ -46,7 +46,6 @@ public class Consumer {
     public Consumer() throws MQClientException{
         consumer = new DefaultMQPushConsumer(CONSUMER_GROUP);
         consumer.setNamesrvAddr(MQConfig.NAME_SERVER);
-
         //消费模式:一个新的订阅组第一次启动从队列的最后位置开始消费 后续再启动接着上次消费的进度开始消费
         consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_LAST_OFFSET);
         //订阅主题 和 标签（* 代表所有标签）下的信息

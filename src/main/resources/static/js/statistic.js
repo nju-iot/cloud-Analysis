@@ -25,6 +25,8 @@ $(document).ready(function () {
         })
     }
 
+
+
     /*
         生成散点图 和 回归分析图
      */
@@ -36,6 +38,7 @@ $(document).ready(function () {
             contentType: 'application/json',
             processData: false,
             success: function (res) {
+                console.log(res);
                 drawScatter(res);
                 draw_linear_regression(res)
             },
@@ -44,6 +47,7 @@ $(document).ready(function () {
             }
         })
     }
+
 
     function drawScatter(scatter_data) {
         var chartDom = document.getElementById('graph-scatter');
@@ -78,6 +82,7 @@ $(document).ready(function () {
 
         option && myChart.setOption(option);
     }
+
 
     function draw_linear_regression(data) {
 
@@ -145,18 +150,21 @@ $(document).ready(function () {
         option && myChart.setOption(option);
     }
 
+
+
     /*
         生成柱状图
      */
     function getTempAndNum(place) {
         $.ajax({
-            type: 'POST',
+            type: 'GET',
             url: '/device/tempNum',
             async: true,
             data: place,
             contentType: 'application/json',
             processData: false,
             success: function (res) {
+                console.log(res);
                 var tempList = [];
                 var numList = [];
                 for (var i = 0; i < res.length; i++) {
@@ -278,13 +286,14 @@ $(document).ready(function () {
      */
     function getMeanByPlace(place, index) {
         $.ajax({
-            type: 'POST',
+            type: 'GET',
             url: '/device/meanByPlace',
             async: true,
             data: place,
             contentType: 'application/json',
             processData: false,
             success: function (res) {
+                console.log(res);
                 var dateList = [];
                 var valueList = [];
                 for (var i = 0; i < res.length; i++) {

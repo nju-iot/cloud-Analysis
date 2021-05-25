@@ -26,9 +26,11 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8080/eureka/
+      defaultZone: http://121.41.221.74:9001/eureka
   instance:
     prefer-ip-address: true
+    ip-address: 139.196.202.149
+    non-secure-port: 8081
 
 rocketmq:
   producer:

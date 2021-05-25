@@ -7,6 +7,7 @@ import com.example.cloudbiz1.VO.TimeDataVO;
 import com.example.cloudbiz1.entity.DateMean;
 import com.example.cloudbiz1.entity.Device;
 
+import java.sql.Time;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +34,8 @@ public interface DeviceService {
     int getSizeOfAllData();
 
     TimeDataVO getNewData();
+
+    List<TimeDataVO> getAllNewTemper();
 
 
 }

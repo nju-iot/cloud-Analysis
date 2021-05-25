@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 
 import java.sql.*;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Date;
 
 /**
  * @author xmx
@@ -91,43 +93,17 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     public List<PieVO> queryDataDistribute() {
-        /*
-        List<Device> listIn;
-        List<Device> listOut;
-
-        if(global_listIn.size() > 0) {
-            listIn = global_listIn;
-            System.out.println("queryDataDistribute   用了全局");
-        }
-        else {
-            listIn = deviceRepository.findDeviceByPlace("In");
-            System.out.println("queryDataDistribute  没用全局");
-        }
-
-        if(global_listOut.size() > 0) {
-            listOut = global_listOut;
-            System.out.println("queryDataDistribute  用了全局");
-        }
-        else {
-            listOut = deviceRepository.findDeviceByPlace("Out");
-            System.out.println("queryDataDistribute   没用全局");
-        }
-
+        List<Device> listIn = deviceRepository.findDeviceByPlace("In");
+        List<Device> listOut = deviceRepository.findDeviceByPlace("Out");
         List<PieVO> res = new ArrayList<>();
         res.add(new PieVO(listIn.size(), "In"));
         res.add(new PieVO(listOut.size(), "Out"));
-        */
-
-
-        List<PieVO> res = new ArrayList<>();
-        res.add(new PieVO(20345, "In"));
-        res.add(new PieVO(77261, "Out"));
         return res;
     }
 
     public List<TempNumVO> tempDistributeNum(String place) {
-        List<Device> list;
         List<TempNumVO> res = new ArrayList<>();
+        /*
         if (place.equals("In")) {
             res.add(new TempNumVO("21", 1));
             res.add(new TempNumVO("22", 18));
@@ -182,20 +158,9 @@ public class DeviceServiceImpl implements DeviceService {
             res.add(new TempNumVO("43", 2003));
             return res;
         }
-        /*
-        if(place.equals("In") && global_listIn.size()>0) {
-            list = global_listIn;
-            System.out.println("tempDistributeNum  用了全局");
-        }
-        else if(place.equals("Out") && global_listOut.size()>0) {
-            list = global_listOut;
-            System.out.println("tempDistributeNum  用了全局");
-        }
-        else {
-            list = deviceRepository.findDeviceByPlace(place);
-            System.out.println("tempDistributeNum  没用全局");
-        }
+        */
 
+        List<Device> list = deviceRepository.findDeviceByPlace(place);
         Map<String, Integer> tempType = new HashMap<>();
         for(Device device : list){
             tempType.put(device.getTemp(), tempType.get(device.getTemp())==null ? 0 : tempType.get(device.getTemp()) + 1);
@@ -206,8 +171,6 @@ public class DeviceServiceImpl implements DeviceService {
             TempNumVO tempNumVO = new TempNumVO(entry.getKey(), entry.getValue());
             res.add(tempNumVO);
         }
-        return res;
-        */
         return res;
     }
 
@@ -319,12 +282,15 @@ public class DeviceServiceImpl implements DeviceService {
             ResultSet rs = statement.executeQuery();
             TimeDataVO timeDataVO = new TimeDataVO();
             while (rs.next()){
+                String old_time = rs.getTimestamp("time").toString();
+                String new_time = changeTime(old_time);
                 timeDataVO = new TimeDataVO(rs.getString("id"),
                         rs.getString("device_name"),
                         rs.getInt("temp"),
                         rs.getString("lng"),
                         rs.getString("lat"),
-                        rs.getTimestamp("time"));
+                        rs.getTimestamp("time"),
+                        new_time);
             }
             return timeDataVO;
         }catch (Exception e){
@@ -333,6 +299,36 @@ public class DeviceServiceImpl implements DeviceService {
         return new TimeDataVO();
     }
 
+    public List<TimeDataVO> getAllNewTemper(){
+        List<TimeDataVO> list = new ArrayList<>();
+        try{
+            DBConfig dbConfig = DBConfig.getInstance();
+            Connection connection = dbConfig.getConnection();
+            if(!connection.isClosed())
+                System.out.println("Succeeded connecting to the Database!");
+            PreparedStatement statement = connection.prepareStatement("select * from real_time_data order by time asc");
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()){
+                String old_time = rs.getTimestamp("time").toString();
+                String new_time = changeTime(old_time);
+                TimeDataVO timeDataVO = new TimeDataVO(rs.getString("id"),
+                        rs.getString("device_name"),
+                        rs.getInt("temp"),
+                        rs.getString("lng"),
+                        rs.getString("lat"),
+                        rs.getTimestamp("time"),
+                        new_time);
+                list.add(timeDataVO);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    private String changeTime(String time){
+        return time.substring(0,19);
+    }
 
     private List<DateMean> getTempMeanByDate(List<Device> list) {
         Map<String, Integer> dateTotal = new HashMap<>();

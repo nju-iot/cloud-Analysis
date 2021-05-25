@@ -53,14 +53,26 @@ public class DeviceController {
     }
 
 
+
     /*
         用于生成折线图，统计室内外温度的变化
      */
-    @RequestMapping(value = "/meanByPlace", method = RequestMethod.POST)
+    @RequestMapping(value = "/meanByPlace", method = RequestMethod.GET)
     @ResponseBody
-    public List<DateMean> meanByPlace(@RequestBody(required = false) String place) {
+    public List<DateMean> meanByPlace(@RequestParam("place") String place) {
         return deviceService.queryDeviceByPlace(place);
     }
+
+    /*
+       用于生成柱状图，统计温度的出现次数
+    */
+    @RequestMapping(value = "/tempNum", method = RequestMethod.GET)
+    @ResponseBody
+    public List<TempNumVO> getTempAndNum(@RequestParam("place") String place) {
+        return deviceService.tempDistributeNum(place);
+    }
+
+
 
     /*
         用于生成饼图，统计室内外温度的占比
@@ -71,14 +83,7 @@ public class DeviceController {
         return deviceService.queryDataDistribute();
     }
 
-    /*
-        用于生成柱状图，统计温度的出现次数
-     */
-    @RequestMapping(value = "/tempNum", method = RequestMethod.POST)
-    @ResponseBody
-    public List<TempNumVO> getTempAndNum(@RequestBody(required = false) String place) {
-        return deviceService.tempDistributeNum(place);
-    }
+
 
     /*
         用于生成散点图 和 回归分析图
@@ -95,7 +100,6 @@ public class DeviceController {
     public void testProduce(){
         mqService.produceMessage();
     }
-
 
 
     /*
@@ -118,13 +122,11 @@ public class DeviceController {
     }
 
 
-    /*
-        返回空闲车位
-     */
-    @RequestMapping(value = "/getEmptySpot", method = RequestMethod.GET)
+    @RequestMapping(value = "/allNewTemper",method = RequestMethod.GET)
     @ResponseBody
-    public List<List<SpotVO>> getEmptySpot(){
-        return deviceService.emptySpotEveryTime();
+    public List<TimeDataVO> getAllNewTemper(){
+        return deviceService.getAllNewTemper();
     }
+
 
 }

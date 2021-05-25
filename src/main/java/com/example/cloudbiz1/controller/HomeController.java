@@ -26,10 +26,4 @@ public class HomeController {
     public String jumpChina(){
         return "china";
     }
-
-    @RequestMapping("/layui")
-    public String layuiJump(){
-        return "TestUI";
-    }
-
 }

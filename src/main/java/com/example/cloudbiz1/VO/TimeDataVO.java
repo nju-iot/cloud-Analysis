@@ -20,16 +20,27 @@ public class TimeDataVO {
 
     private Timestamp time;
 
+    private String time2;
+
     public TimeDataVO(){
 
     }
-    public TimeDataVO(String id, String device_name, int temp, String lng, String lat, Timestamp time) {
+    public TimeDataVO(String id, String device_name, int temp, String lng, String lat, Timestamp time, String time2) {
         this.id = id;
         this.device_name = device_name;
         this.temp = temp;
         this.lng = lng;
         this.lat = lat;
         this.time = time;
+        this.time2 = time2;
+    }
+
+    public String getTime2() {
+        return time2;
+    }
+
+    public void setTime2(String time2) {
+        this.time2 = time2;
     }
 
     public String getId() {
